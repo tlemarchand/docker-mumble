@@ -1,6 +1,8 @@
 FROM debian:buster-slim
 
-RUN apt-get update && apt-get install -y mumble-server && \
+COPY version /tmp/
+
+RUN apt-get update && apt-get install -y mumble-server=`cat /tmp/version` && \
     rm -rf /var/lib/apt/lists/*
 
 EXPOSE 64738/tcp

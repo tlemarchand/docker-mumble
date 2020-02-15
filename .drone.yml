@@ -2,12 +2,21 @@ kind: pipeline
 name: default
 
 steps:
+- name: generate-versions
+  image: debian:buster-slim
+  commands:
+  - apt-get update
+  - "apt-cache policy mumble-server | sed -n -e 's/^.*Candidate: //p' | tr -d '\n' > version"
+
+- name: set-tag-mumble
+  image: debian:buster-slim
+  commands:
+  - APPVERSION=`cat version | cut -d~ -f 1 | cut -d+ -f 1`
+  - echo $APPVERSION,latest,$APPVERSION-$DRONE_BUILD_NUMBER > .tags
+
 - name: docker  
   image: plugins/docker
   settings:
-    tags:
-      - latest
-      - build-${DRONE_BUILD_NUMBER}
     repo: tlemarchand/mumble
     username:
       from_secret: docker_username
@@ -17,9 +26,6 @@ steps:
 - name: quay  
   image: plugins/docker
   settings:
-    tags:
-      - latest
-      - build-${DRONE_BUILD_NUMBER}
     repo: quay.io/tlemarchand/mumble
     username:
       from_secret: quay_username

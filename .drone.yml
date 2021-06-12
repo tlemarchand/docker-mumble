@@ -14,14 +14,14 @@ steps:
   - APPVERSION=`cat version | cut -d~ -f 1 | cut -d+ -f 1`
   - echo $APPVERSION,latest,$APPVERSION-$DRONE_BUILD_NUMBER > .tags
 
-- name: docker  
-  image: plugins/docker
-  settings:
-    repo: tlemarchand/mumble
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
+# - name: docker  
+#   image: plugins/docker
+#   settings:
+#     repo: tlemarchand/mumble
+#     username:
+#       from_secret: docker_username
+#     password:
+#       from_secret: docker_password
 
 - name: quay  
   image: plugins/docker

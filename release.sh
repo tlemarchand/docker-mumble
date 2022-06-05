@@ -4,5 +4,5 @@ podman run debian:bullseye-slim /bin/bash -c "apt-get update > /dev/null && apt-
 git add -A
 git commit -m `cat version`
 git push origin master
-git tag `cat version`
-git push origin `cat version`
+git tag -f `cat version`
+git push origin -f `cat version`
